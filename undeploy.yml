@@ -1,0 +1,24 @@
+pakalapatipranithvarma@ansible-control:~/ansible-hw1$ cat undeploy.yml
+---
+- name: Remove Apache Web Server
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Stop Apache
+      service:
+        name: apache2
+        state: stopped
+      ignore_errors: yes
+
+    - name: Remove Apache
+      apt:
+        name: apache2
+        state: absent
+        purge: yes
+        autoremove: yes
+
+    - name: Remove webpage
+      file:
+        path: /var/www/html/index.html
+        state: absent
